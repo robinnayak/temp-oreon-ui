@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { CreateBusiness } from "./CreateBusiness";
 import TestLogo from "../../assets/test-brand-logo.png";
-import { Back } from "../../common/components/Back";
 
 const TextAreaContainer = () => {
   return (
@@ -22,7 +21,7 @@ const TextAreaContainer = () => {
   );
 };
 
-const LogoContainer = ({ handleBack }: { handleBack: () => void }) => {
+const LogoContainer = ({ handleCross }: { handleCross: () => void }) => {
   const [selectedLogo, setSelectedLogo] = useState(false);
   const companyLogos = [
     { name: "Oreon", background: "black", selected: selectedLogo, logo: TestLogo },
@@ -36,8 +35,7 @@ const LogoContainer = ({ handleBack }: { handleBack: () => void }) => {
   ];
 
   return (
-    <div className="flex flex-col flex-1">
-      <Back onClick={handleBack} className="mb-8" />
+    <div className="flex flex-col flex-1 border-2 ">
       <div className="w-full flex-1">
         <div className="flex justify-end mb-4">
           <button
@@ -72,7 +70,8 @@ const LogoContainer = ({ handleBack }: { handleBack: () => void }) => {
   );
 };
 
-const BusinessPlanReady = ({ handleBack }: { handleBack: () => void }) => {
+const BusinessPlanReady = ({ handleCross }: { handleCross: () => void }) => {
+  const [selectedOption, setSelectedOption] = useState(false);
   const options = [
     { name: "Pricing Strategy", icon: faChartBar },
     { name: "Business Plan", icon: faClipboardList },
@@ -84,27 +83,31 @@ const BusinessPlanReady = ({ handleBack }: { handleBack: () => void }) => {
 
   return (
     <div className="flex flex-col flex-1">
-      <Back onClick={handleBack} className="mb-8" />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 flex-1">
         {options.map((option, index) => (
-          <div
+          <button
+            onClick={() => setSelectedOption(!selectedOption)}
             key={index}
-            className="flex flex-col items-center justify-center p-6 bg-white shadow-sm hover:shadow-md transition-all duration-300 rounded-lg cursor-pointer"
+            className="rounded-lg flex items-center justify-center transition-transform hover:scale-105 focus:ring-2 focus:ring-purple-400 focus:outline-none shadow-sm hover:shadow-md"
           >
-            <FontAwesomeIcon icon={option.icon} className="text-purple-500 text-3xl mb-4" />
-            <h3 className="text-gray-800 text-sm font-medium text-center">{option.name}</h3>
-          </div>
+            <div
+              key={index}
+              className="flex flex-col items-center justify-center p-6 bg-whitecursor-pointer"
+            >
+              <FontAwesomeIcon icon={option.icon} className="text-purple-500 text-3xl mb-4" />
+              <h3 className="text-gray-800 text-sm font-medium text-center">{option.name}</h3>
+            </div>
+          </button>
         ))}
       </div>
     </div>
   );
 };
 
-const CreateDomainPage = ({ handleBack }: { handleBack: () => void }) => {
+const CreateDomainPage = ({ handleCross }: { handleCross: () => void }) => {
   return (
     <div className="flex flex-col flex-1">
-      <Back onClick={handleBack} className="mb-8" />
 
       <div className="flex flex-col md:flex-row justify-between gap-4 sm:gap-8 flex-1">
         <div className="flex flex-col w-full md:w-2/5">
@@ -125,9 +128,8 @@ const CreateDomainPage = ({ handleBack }: { handleBack: () => void }) => {
           ].map((domain, index) => (
             <div
               key={index}
-              className={`flex items-center justify-between p-4 border rounded-lg hover:shadow-md cursor-pointer transition-all duration-300 ${
-                domain.price === 'Free' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-purple-200'
-              }`}
+              className={`flex items-center justify-between p-4 border rounded-lg hover:shadow-md cursor-pointer transition-all duration-300 ${domain.price === 'Free' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-purple-200'
+                }`}
             >
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-orange-500 rounded-full flex items-center justify-center">
@@ -147,18 +149,18 @@ const CreateDomainPage = ({ handleBack }: { handleBack: () => void }) => {
 };
 
 export const CreateBusinessPage = () => {
-  const [pageName, setPageName] = useState("TextAreaContainer");
+  const [pageName, setPageName] = useState("step 1");
 
-  const renderContent = (handleBack: () => void) => {
+  const renderContent = (handleCross: () => void) => {
     switch (pageName) {
-      case "TextAreaContainer":
+      case "step 1":
         return <TextAreaContainer />;
-      case "LogoContainer":
-        return <LogoContainer handleBack={handleBack} />;
-      case "BusinessPlanReady":
-        return <BusinessPlanReady handleBack={handleBack} />;
-      case "CreateDomainPage":
-        return <CreateDomainPage handleBack={handleBack} />;
+      case "step 2":
+        return <LogoContainer handleCross={handleCross} />;
+      case "step 3":
+        return <BusinessPlanReady handleCross={handleCross} />;
+      case "Domain":
+        return <CreateDomainPage handleCross={handleCross} />;
       default:
         return <TextAreaContainer />;
     }
@@ -166,13 +168,13 @@ export const CreateBusinessPage = () => {
 
   const getTitle = () => {
     switch (pageName) {
-      case "TextAreaContainer":
+      case "step 1":
         return "Tell us about your business";
-      case "LogoContainer":
+      case "step 2":
         return "Select your company name & logo";
-      case "BusinessPlanReady":
+      case "step 3":
         return "Your Business Plan is Ready!";
-      case "CreateDomainPage":
+      case "Domain":
         return "Select Domain";
       default:
         return "Tell us about your business";
@@ -182,34 +184,46 @@ export const CreateBusinessPage = () => {
   const handleNext = () => {
     // Navigate through pages sequentially
     setPageName((prev) => {
-      if (prev === "TextAreaContainer") return "LogoContainer";
-      if (prev === "LogoContainer") return "BusinessPlanReady";
-      if (prev === "BusinessPlanReady") return "CreateDomainPage";
-      if (prev === "CreateDomainPage") {
+      if (prev === "step 1") return "step 2";
+      if (prev === "step 2") return "step 3";
+      if (prev === "step 3") return "Domain";
+      if (prev === "Domain") {
         alert("You are at the domain page. Please select a domain to proceed.");
-        return "CreateDomainPage";
+        return "Domain";
       }
-      return "TextAreaContainer";
+      return "step 1";
     });
   };
-  const handleBack = () => {
+  // const handleBack = () => {
+  //   // Navigate through pages sequentially
+  //   setPageName((prev) => {
+  //     if (prev === "step2") return "step1";
+  //     if (prev === "step3") return "step2";
+  //     if (prev === "Domain") return "step3";
+  //     return "step1";
+  //   });
+  // };
+
+  const handleCross = () => {
     // Navigate through pages sequentially
     setPageName((prev) => {
-      if (prev === "LogoContainer") return "TextAreaContainer";
-      if (prev === "BusinessPlanReady") return "LogoContainer";
-      if (prev === "CreateDomainPage") return "BusinessPlanReady";
-      return "TextAreaContainer";
+      if (prev === "step 2") return "step 1";
+      if (prev === "step 3") return "step 2";
+      if (prev === "Domain") return "step 3";
+      return "step 1";
     });
   };
+
 
   return (
     <CreateBusiness
       title={getTitle()}
-      btn_name={pageName === "CreateDomainPage" ? "Next" : "Next"}
+      btn_name={pageName === "Domain" ? "Skip" : "Next"}
       onClick={handleNext}
+      onClose={handleCross}
       pageName={pageName}
     >
-      {renderContent(handleBack)}
+      {renderContent(handleCross)}
     </CreateBusiness>
   );
 };
