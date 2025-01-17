@@ -38,16 +38,16 @@ export const CreateBusiness = ({ title = "Tell us about your business", btn_name
 
     const renderWelcomePage = () => {
         return (
-            <div className="min-h-[500px] flex flex-1 flex-col justify-center items-center">
+            <div className="min-h-[600px] flex flex-1 flex-col justify-center items-center md:px-20 md:py-16 sm:px-10 sm:py-10 px-4 py-6">
                 <img
                     src="/src/assets/images/oreon-logo.png"
                     alt="Oreon"
                     width={300}
                     height={200}
-                    className="w-[300px] h-[200px]"
+                    className="w-[300px] h-[200px] md:w-[400px] md:h-[250px] sm:w-[350px] sm:h-[200px]"
                 />
-                <h1 className="text-2xl font-light pb-4 text-center">{title}</h1>
-                <NextButton onClick={onClick} btn_name={btn_name} className="absolute bottom-44 right-40" />
+                <h1 className="text-2xl font-light pb-4 text-center md:text-3xl sm:text-2xl">{title.toUpperCase()}</h1>
+                <NextButton onClick={onClick} btn_name={btn_name} className="absolute bottom-36 right-64 md:right-80" />
             </div>
         );
     };
@@ -122,7 +122,7 @@ export const CreateBusiness = ({ title = "Tell us about your business", btn_name
                         <h3 className="text-lg font-light">New Business</h3>
                     </div>
                     <div>
-                        <h3 className="text-lg font-semibold">{pageName}</h3>
+                        <h3 className="text-lg font-semibold">{pageName.charAt(0).toUpperCase() + pageName.slice(1)}</h3>
                     </div>
                     <div className="" >
                         <button>

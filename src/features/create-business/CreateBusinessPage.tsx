@@ -37,8 +37,8 @@ const LogoContainer = ({ handleCross }: { handleCross: () => void }) => {
   ];
 
   return (
-    <div className="flex flex-col flex-1 p-4 border rounded-lg hover:shadow-md cursor-pointer transition-all duration-300 hover:border-2">
-      <div className="w-full flex-1"> 
+    <div className="flex flex-col flex-1 p-4  rounded-lg  cursor-pointer transition-all duration-300 ">
+      <div className="w-full flex-1">
         <div className="flex justify-end mb-4">
           <button
             className="text-purple-500 flex items-center gap-2 hover:text-purple-600 transition-colors duration-300 text-sm font-medium"
@@ -108,9 +108,18 @@ const BusinessPlanReady = ({ handleCross }: { handleCross: () => void }) => {
 };
 
 const CreateDomainPage = ({ handleCross }: { handleCross: () => void }) => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  const domains = [
+    { name: 'igte.oreon.ai', price: 'Free' },
+    { name: 'test.com', price: '£10/year' },
+    { name: 'rtest.co.uk', price: '£9/year' },
+    { name: 'test.io', price: '£37/year' },
+    { name: 'test.ai', price: '£50/year' },
+  ]
+
   return (
     <div className="flex flex-col flex-1">
-
       <div className="flex flex-col md:flex-row justify-between gap-4 sm:gap-8 flex-1">
         <div className="flex flex-col w-full md:w-2/5">
           <h1 className="text-2xl font-semibold text-gray-800 mb-4">Select a domain</h1>
@@ -121,17 +130,11 @@ const CreateDomainPage = ({ handleCross }: { handleCross: () => void }) => {
         </div>
 
         <div className="space-y-4 w-full md:w-3/5">
-          {[
-            { name: 'ignite.oreon.ai', price: 'Free' },
-            { name: 'test.com', price: '£10/year' },
-            { name: 'rtest.co.uk', price: '£9/year' },
-            { name: 'test.io', price: '£37/year' },
-            { name: 'test.ai', price: '£50/year' },
-          ].map((domain, index) => (
-            <div
+          {domains.map((domain, index) => (
+            <button
               key={index}
-              className={`flex items-center justify-between p-4 border rounded-lg hover:shadow-md cursor-pointer transition-all duration-300 ${domain.price === 'Free' ? 'border-purple-500 bg-purple-50' : 'border-gray-200 hover:border-purple-200'
-                }`}
+              className={` w-full flex items-center justify-between p-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:shadow-md cursor-pointer transition-all duration-300 ${selectedOption === domain.name ? 'bg-purple-50' : 'border-gray-200 hover:border-purple-200'}`}
+              onClick={() => setSelectedOption(domain.name)}
             >
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-orange-500 rounded-full flex items-center justify-center">
@@ -142,7 +145,7 @@ const CreateDomainPage = ({ handleCross }: { handleCross: () => void }) => {
               <span className={`text-sm font-semibold ${domain.price === 'Free' ? 'text-purple-500' : 'text-gray-600'}`}>
                 {domain.price}
               </span>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -218,7 +221,7 @@ export const CreateBusinessPage = () => {
       if (prev === "step 2") return "step 1";
       if (prev === "step 3") return "step 2";
       if (prev === "Domain") return "step 3";
-      
+
       return "WelcomePage";
     });
   };
