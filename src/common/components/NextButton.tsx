@@ -1,7 +1,5 @@
-
-
 interface Props {
-    onClick: () => void
+    onClick: (info?: any) => void
     btn_name: string
     className?: string
 }
