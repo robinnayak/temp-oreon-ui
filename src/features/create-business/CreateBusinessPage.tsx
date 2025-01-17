@@ -4,6 +4,8 @@ import { useState } from "react";
 import { CreateBusiness } from "./CreateBusiness";
 import TestLogo from "../../assets/test-brand-logo.png";
 
+
+
 const TextAreaContainer = () => {
   return (
     <>
@@ -35,11 +37,11 @@ const LogoContainer = ({ handleCross }: { handleCross: () => void }) => {
   ];
 
   return (
-    <div className="flex flex-col flex-1 border-2 ">
-      <div className="w-full flex-1">
+    <div className="flex flex-col flex-1 p-4 border rounded-lg hover:shadow-md cursor-pointer transition-all duration-300 hover:border-2">
+      <div className="w-full flex-1"> 
         <div className="flex justify-end mb-4">
           <button
-            className="text-purple-500 flex items-center gap-2 hover:text-purple-600"
+            className="text-purple-500 flex items-center gap-2 hover:text-purple-600 transition-colors duration-300 text-sm font-medium"
             aria-label="Generate more logo options"
           >
             <span className="text-sm font-medium">Generate More</span>
@@ -149,10 +151,12 @@ const CreateDomainPage = ({ handleCross }: { handleCross: () => void }) => {
 };
 
 export const CreateBusinessPage = () => {
-  const [pageName, setPageName] = useState("step 1");
+  const [pageName, setPageName] = useState("WelcomePage");
 
   const renderContent = (handleCross: () => void) => {
     switch (pageName) {
+      case "WelcomePage":
+        return <></>;
       case "step 1":
         return <TextAreaContainer />;
       case "step 2":
@@ -162,12 +166,14 @@ export const CreateBusinessPage = () => {
       case "Domain":
         return <CreateDomainPage handleCross={handleCross} />;
       default:
-        return <TextAreaContainer />;
+        return <></>;
     }
   };
 
   const getTitle = () => {
     switch (pageName) {
+      case "WelcomePage":
+        return "Welcome to Oreon";
       case "step 1":
         return "Tell us about your business";
       case "step 2":
@@ -184,6 +190,7 @@ export const CreateBusinessPage = () => {
   const handleNext = () => {
     // Navigate through pages sequentially
     setPageName((prev) => {
+      if (prev === "WelcomePage") return "step 1";
       if (prev === "step 1") return "step 2";
       if (prev === "step 2") return "step 3";
       if (prev === "step 3") return "Domain";
@@ -207,10 +214,12 @@ export const CreateBusinessPage = () => {
   const handleCross = () => {
     // Navigate through pages sequentially
     setPageName((prev) => {
+      if (prev === "WelcomePage") return "step 1";
       if (prev === "step 2") return "step 1";
       if (prev === "step 3") return "step 2";
       if (prev === "Domain") return "step 3";
-      return "step 1";
+      
+      return "WelcomePage";
     });
   };
 

@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GradientContainer } from "../../common/";
 import { faEllipsis, faMagnifyingGlass, faUpRightAndDownLeftFromCenter, faXmark } from "@fortawesome/free-solid-svg-icons";
+import NextButton from "../../common/components/NextButton";
 
 interface Props {
     title: string;
@@ -35,6 +36,22 @@ const ProgressBar = ({ steps }: { steps: boolean[] }) => {
 export const CreateBusiness = ({ title = "Tell us about your business", btn_name = "Next", onClick, onClose, children, pageName, className }: Props) => {
     const steps = progressSteps[pageName] || [false, false, false];
 
+    const renderWelcomePage = () => {
+        return (
+            <div className="min-h-[500px] flex flex-1 flex-col justify-center items-center">
+                <img
+                    src="/src/assets/images/oreon-logo.png"
+                    alt="Oreon"
+                    width={300}
+                    height={200}
+                    className="w-[300px] h-[200px]"
+                />
+                <h1 className="text-2xl font-light pb-4 text-center">{title}</h1>
+                <NextButton onClick={onClick} btn_name={btn_name} />
+            </div>
+        );
+    };
+
     const renderContent = () => {
         if (pageName === "step 1") {
             return (
@@ -62,6 +79,8 @@ export const CreateBusiness = ({ title = "Tell us about your business", btn_name
                 </div>
             );
         }
+
+
 
         return (
             <div className="min-h-[400px] md:min-h-[500px] flex flex-1 flex-col bg-white rounded-lg ">
@@ -93,40 +112,43 @@ export const CreateBusiness = ({ title = "Tell us about your business", btn_name
     };
 
     return (
-        <main className={`p-2 flex justify-center items-center flex-col ${className}`}>
-            <div className="flex items-center justify-between mb-4 md:mb-8 relative -top-5 w-full">
-                <div className="flex items-center">
-                    <button onClick={onClose} className="text-gray-600 hover:text-gray-800 transition-colors duration-200">
-                        <FontAwesomeIcon icon={faXmark} className="mr-4" size="lg"  />
-                    </button>
-                    <h3 className="text-lg font-light">New Business</h3>
-                </div>
-                <div>
-                    <h3 className="text-lg font-semibold">{ pageName }</h3>
-                </div>
-                <div className="" >
-                    <button>
-                        <FontAwesomeIcon icon={faEllipsis} className="mr-4" size="sm" />
-                    </button>
-                    <button>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className="mr-4" size="sm" />
-                    </button>
-                    <button>
-                        <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className="mr-4" size="sm" />
-                    </button>
-                </div>
-            </div>
-            {pageName !== "Domain" && (
-                <>
-                    <div className="w-full flex justify-center">
-                        <ProgressBar steps={steps} />
+        <main className={`p-2  flex justify-center items-center flex-col ${className}`}>
+            {pageName === "WelcomePage" ? renderWelcomePage() : <>
+                <div className="flex items-center justify-between mb-4 md:mb-8 relative -top-5 w-full">
+                    <div className="flex items-center">
+                        <button onClick={onClose} className="text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                            <FontAwesomeIcon icon={faXmark} className="mr-4" size="lg" />
+                        </button>
+                        <h3 className="text-lg font-light">New Business</h3>
                     </div>
-                    <h1 className="my-8">{title}</h1>
-                </>
-            )}
-            <div className="md:min-w-[700px] md:min-h-[400px] ">
-                {renderContent()}
-            </div>
+                    <div>
+                        <h3 className="text-lg font-semibold">{pageName}</h3>
+                    </div>
+                    <div className="" >
+                        <button>
+                            <FontAwesomeIcon icon={faEllipsis} className="mr-4" size="sm" />
+                        </button>
+                        <button>
+                            <FontAwesomeIcon icon={faMagnifyingGlass} className="mr-4" size="sm" />
+                        </button>
+                        <button>
+                            <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className="mr-4" size="sm" />
+                        </button>
+                    </div>
+                </div>
+                {pageName !== "Domain" && (
+                    <>
+                        <div className="w-full flex justify-center">
+                            <ProgressBar steps={steps} />
+                        </div>
+                        <h1 className="my-8">{title}</h1>
+                    </>
+                )}
+                <div className="md:min-w-[700px] md:min-h-[400px] ">
+                    {renderContent()}
+                </div>
+            </>}
+            <NextButton onClick={onClick} btn_name={btn_name} className="absolute bottom-0 right-0" />
         </main>
     );
 };
