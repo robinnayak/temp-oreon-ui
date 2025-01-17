@@ -47,7 +47,7 @@ export const CreateBusiness = ({ title = "Tell us about your business", btn_name
                     className="w-[300px] h-[200px]"
                 />
                 <h1 className="text-2xl font-light pb-4 text-center">{title}</h1>
-                <NextButton onClick={onClick} btn_name={btn_name} />
+                <NextButton onClick={onClick} btn_name={btn_name} className="absolute bottom-44 right-40" />
             </div>
         );
     };
@@ -148,7 +148,6 @@ export const CreateBusiness = ({ title = "Tell us about your business", btn_name
                     {renderContent()}
                 </div>
             </>}
-            <NextButton onClick={onClick} btn_name={btn_name} className="absolute bottom-0 right-0" />
         </main>
     );
 };
